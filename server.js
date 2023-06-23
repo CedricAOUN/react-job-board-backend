@@ -104,7 +104,8 @@ app.post('/auth', bodyParser.json(), (req,res) => {
                 username: user.username,
                 userType: user.userType,
                 userId: user.iduser,
-                hasFile: fileResults.length > 0, // Check if file entry exists
+                hasFile: fileResults.length > 0,
+                fileName: fileResults.length > 0 ? fileResults[0].file_name : "" // Check if file entry exists
               };
 
               res.status(200).json(userData);
@@ -213,7 +214,20 @@ app.post('/candidates', bodyParser.json(), (req, res)=> {
 
 })
 
+app.post("/applications", (req, res) => {
+  const sql =   `SELECT * FROM job 
+                INNER JOIN candidates 
+                ON candidates.job_id = job.idjob
+                WHERE user_id = ${req.body.user_id}`
 
+  connection.query(sql, (err, result) => {
+    if(result[0] == undefined) {
+      res.status(200).json([])
+    } else {
+      res.status(200).json(result)
+    }
+  })
+})
 
 app.post("/checkCV", (req, res) => {
   const sql = `SELECT * FROM files WHERE user_id='${req.body.user_id}'`
