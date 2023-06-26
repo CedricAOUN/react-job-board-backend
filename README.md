@@ -6,8 +6,18 @@ Back-end of my react-job-board project, designed to work with: [react-job-board-
 Download this repository and extract it.
 
 ### Database Setup
-- Select a Database management system of your choosing. *(eg: [MySql Workbench](https://www.mysql.com/products/workbench/))*
-- Create a new Database
+- Select a MySQL Database management system of your choosing. *(eg: [MySql Workbench](https://www.mysql.com/products/workbench/))*
+- Create a new "Connection" in your DB Management System. For minimal code modification, here is the relevant information from the code:
+  ```
+  const connection = mysql.createConnection({
+  host: 'localhost', 
+  user: 'root', 
+  password: 'password', 
+  database: 'jobbyjob_db' 
+});
+  ```
+Otherwise, you will have to modify that code with the information you have setup.
+
 - Import "MockDatabase.sql" provided in this repository.
 
 You should now have a Database with a "jobbyjob_db" table, and a bunch of data.
