@@ -22,7 +22,7 @@ Download this repository and extract it.
 If all was done correctly, you should now have a connection point in your Database management system with a "jobbyjob_db" table, and a bunch of data.
 
 ### Starting up the server
-- Make sure you have Node installed. (Open terminal/CMD and type Node -v). If not, please install it via: [NodeJS](https://nodejs.org/en/download)
+- Make sure you have Node installed. (Open terminal/CMD and type "Node -v"). If not, please install it via: [NodeJS](https://nodejs.org/en/download)
 - Open Terminal/CMD in the folder where you extracted this repository. (.../react-job-board-backend)
 - Type "npm install" and please wait for the packages to finish installing.
 - Type "node server.js".
