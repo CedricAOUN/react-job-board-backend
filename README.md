@@ -16,7 +16,7 @@ Download this repository and extract it.
     database: 'jobbyjob_db' 
   });
   ```
-- If you setup your connection with different information, you maybe modify this part of the code in "server.js".
+- If you setup your connection with different information, you may modify this part of the code in "server.js".
 - Import "MockDatabase.sql" provided in this repository, into the DB management system.
 
 If all was done correctly, you should now have a connection point in your Database management system with a "jobbyjob_db" table, and a bunch of data.
