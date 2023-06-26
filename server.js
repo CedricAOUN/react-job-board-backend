@@ -4,6 +4,8 @@ const express = require('express');
 const fs = require('fs');
 const mysql = require('mysql');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
+require("dotenv").config();
 
 const app = express();
 const port = 3000; // Replace with your desired port number
@@ -33,7 +35,25 @@ app.listen(port, () => {
 });
 
 
-app.use(cors()); // if you want to use every domain
+app.use(cors()); 
+
+async function verifyToken(req, res, next) {
+  const headerString = req.headers['authorization'];
+
+  if (!headerString) {
+    return res.status(401).json({ error: 'Token not provided' });
+  }
+
+  jwt.verify(headerString.split(" ")[1], process.env.ACCESS_TOKEN_SECRET , (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+
+    req.userId = decoded.userId;
+    next();
+  });
+}
+
 
 app.use(
   fileupload({
@@ -58,7 +78,7 @@ app.get('/jobs', (req, res) => {
     });
   });
 
-app.post('/myJobs', bodyParser.json(), (req, res) => {
+app.post('/myJobs', verifyToken, bodyParser.json(), (req, res) => {
   const sql = `SELECT * FROM job WHERE idemployer='${req.body.userid}'`
 
   connection.query(sql, (err, results) => {
@@ -97,15 +117,17 @@ app.post('/auth', bodyParser.json(), (req,res) => {
                 res.status(500).json({ error: 'Failed to fetch file' });
                 return;
               }
+              const userToken = jwt.sign({ userId: user.iduser }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
 
               const userData = {
+                token: userToken,
                 username: user.username,
                 userType: user.userType,
                 userId: user.iduser,
                 hasFile: fileResults.length > 0,
                 fileName: fileResults.length > 0 ? fileResults[0].file_name : "" // Check if file entry exists
               };
-
+              
               res.status(200).json(userData);
             });
             return;
@@ -139,7 +161,7 @@ app.post('/createUser', bodyParser.json(), (req,res) => {
 
 })
 
-app.post('/deleteUser', bodyParser.json(), (req,res)=> {
+app.post('/deleteUser', verifyToken, bodyParser.json(), (req,res)=> {
   const sql = `DELETE FROM user WHERE email = '${req.body.email}';`
 
   connection.query(sql, (err, results) => {
@@ -153,7 +175,7 @@ app.post('/deleteUser', bodyParser.json(), (req,res)=> {
   })
 })
 
-app.post('/deleteJob', bodyParser.json(), (req,res)=> {
+app.post('/deleteJob', verifyToken, bodyParser.json(), (req,res)=> {
   const sql = `DELETE FROM job WHERE idjob = '${req.body.jobId}';`
 
   connection.query(sql, (err, results) => {
@@ -170,7 +192,7 @@ app.post('/deleteJob', bodyParser.json(), (req,res)=> {
 
 
 
-app.post('/createJob', bodyParser.json(), (req,res)=> {
+app.post('/createJob', verifyToken, bodyParser.json(), (req,res)=> {
   const sql = `INSERT INTO job(idemployer, posted_date, title, company, location, description, requirements, salary) VALUES ('${req.body.iduser}', '${req.body.posted_date}', 
   '${req.body.title}', '${req.body.company}', '${req.body.location}','${req.body.description}', '${req.body.requirements}', '${req.body.salary}')`
   
@@ -187,7 +209,7 @@ app.post('/createJob', bodyParser.json(), (req,res)=> {
 })
 
 
-app.post('/apply', bodyParser.json(), (req, res) => {
+app.post('/apply', verifyToken, bodyParser.json(), (req, res) => {
   const sql = `INSERT INTO candidates(user_id, job_id) VALUES ('${req.body.user_id}','${req.body.job_id}')`
 
   connection.query(sql, (err, result) => {
@@ -244,7 +266,7 @@ app.post("/applications", (req, res) => {
   })
 })
 
-app.post("/checkCV", (req, res) => {
+app.post("/checkCV",  verifyToken, (req, res) => {
   const sql = `SELECT * FROM files WHERE user_id='${req.body.user_id}'`
 
   connection.query(sql, (err, result)=> {
@@ -262,7 +284,7 @@ app.post("/checkCV", (req, res) => {
 
 
 
-app.post('/upload', (req,res)=> {
+app.post('/upload', verifyToken, (req,res)=> {
   try {
     if (!req.files) {
         res.send({
