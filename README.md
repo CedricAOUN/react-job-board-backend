@@ -10,14 +10,13 @@ Download this repository and extract it.
 - Create a new "Connection" in your DB Management System. For minimal code modification, here is the relevant information from the code:
   ```
   const connection = mysql.createConnection({
-  host: 'localhost', 
-  user: 'root', 
-  password: 'password', 
-  database: 'jobbyjob_db' 
-});
+    host: 'localhost', 
+    user: 'root', 
+    password: 'password', 
+    database: 'jobbyjob_db' 
+  });
   ```
-Otherwise, you will have to modify that code with the information you have setup.
-
+- If you setup your connection with different information, you maybe modify this part of the code in "server.js".
 - Import "MockDatabase.sql" provided in this repository.
 
 You should now have a Database with a "jobbyjob_db" table, and a bunch of data.
