@@ -89,8 +89,6 @@ app.post('/auth', bodyParser.json(), (req,res) => {
         } 
         
         else if(user.password == req.body.password) {
-            console.log("Logged in!");
-
             const fileSql = `SELECT * FROM files WHERE user_id = '${user.iduser}'`;
 
             connection.query(fileSql, (fileErr, fileResults) => {
@@ -154,6 +152,23 @@ app.post('/deleteUser', bodyParser.json(), (req,res)=> {
     }
   })
 })
+
+app.post('/deleteJob', bodyParser.json(), (req,res)=> {
+  const sql = `DELETE FROM job WHERE idjob = '${req.body.jobId}';`
+
+  connection.query(sql, (err, results) => {
+    if(err) {
+      console.error('Failed to delete job with error:', err);
+      res.status(500).json({error: 'Failed to delete job', err});
+      return;
+    } else {
+      return res.status(200).json("Job Deleted")
+    }
+  })
+})
+
+
+
 
 app.post('/createJob', bodyParser.json(), (req,res)=> {
   const sql = `INSERT INTO job(idemployer, posted_date, title, company, location, description, requirements, salary) VALUES ('${req.body.iduser}', '${req.body.posted_date}', 
