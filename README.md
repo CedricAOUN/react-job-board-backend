@@ -11,7 +11,7 @@ It requires a MySQL DB server, and a node server. For that reason, Docker has be
 - While the sql is booting up, the application will keep retrying to connect. This is normal and only happens the first time you boot up this composition. You will know it's ready when ```api-server  | Connected to MySQL``` is displayed in green inside of your Terminal/CMD.
 
 
-You may now enjoy the full capabilities of my [React Job Board Application](https://react-job-board-ui.vercel.app/). The website should now be querying data from your docker containers,  the login/signup feature is acttive, and you will have a list of jobs displayed on the main page.
+You may now enjoy the full capabilities if you vist my [React Job Board Application Website](https://react-job-board-ui.vercel.app/). The website should now be querying data from your docker containers,  the login/signup feature is acttive, and you will have a list of jobs displayed on the main page.
 
 
 When done, simply press CTRL + C/CMD + C in your terminal/CMD to stop the process. 
