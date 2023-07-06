@@ -2,7 +2,7 @@ const bodyParser = require('body-parser');
 const fileupload = require('express-fileupload')
 const express = require('express');
 const fs = require('fs');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
@@ -11,27 +11,40 @@ const app = express();
 const port = 3000; // Replace with your desired port number
 
 // Configure MySQL connection
-const connection = mysql.createConnection({
-  host: 'localhost', // Replace with your MySQL host
-  user: 'root', // Replace with your MySQL username
-  password: 'password', // Replace with your MySQL password
-  database: 'jobbyjob_db' // Replace with your MySQL database name
-});
+let connection;
 
 // Connect to MySQL
-connection.connect((err) => {
-  if (err) {
-    console.error('Failed to connect to MySQL:', err);
-    return;
-  }
-  console.log('Connected to MySQL');
-});
 
+function tryConnect() {
+  if(!connection) {
+    connection = mysql.createConnection({
+      host: process.env.MYSQL_HOST,
+      port: process.env.MYSQL_PORT, // Replace with your MySQL host
+      user: process.env.MYSQL_USER, // Replace with your MySQL username
+      password: process.env.MYSQL_PASSWORD, // Replace with your MySQL password
+      database: process.env.MYSQL_DATABASE,
+      connectTimeout: 30000,// Replace with your MySQL database name
+    });
+  }
+  connection.connect((err) => {
+    if (err) {
+      console.log("\x1b[33m%s\x1b[0m", "Failed to connect to MySQL:", err)
+      console.log("Retrying in 30 seconds")
+      connection.destroy();
+      connection = null;
+      setTimeout(()=> {console.log("Retrying..."), tryConnect() }, 30000)
+      return
+    } else {
+      console.log('\x1b[32m%s\x1b[0m','Connected to MySQL');
+      return
+    }
+});}
+tryConnect()
 // Define your API routes and database queries here
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on port: ${port}. Attempting to connect to MySQL(This may take a few minutes).`);
 });
 
 
