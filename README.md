@@ -2,12 +2,15 @@
 Back-end of my react-job-board project, designed to work with: [react-job-board-ui](https://github.com/CedricAOUN/react-job-board-ui)
 
 ## Install guide: 
+Because this is a showcase project, there isn't many secure MySQL hosting solutions for this project.
+
+For that reason, it is more reliable to host your own instance, locally:
 
 Download this repository and extract it.
 
 ### Database Setup
 - Select a MySQL Database management system of your choosing. *(eg: [MySql Workbench](https://www.mysql.com/products/workbench/))*
-- Create a new "Connection" in your DB Management System. For minimal code modification, here is the relevant information from the code:
+- Create a new "Connection" in your DB Management System. For minimal code modification, here are the credentials you can use:
   ```
   const connection = mysql.createConnection({
     host: 'localhost', 
@@ -16,16 +19,21 @@ Download this repository and extract it.
     database: 'jobbyjob_db' 
   });
   ```
-- If you setup your connection with different information, you may modify this part of the code in "server.js".
-- Import "MockDatabase.sql" provided in this repository, into the DB management system.
+- Otherwise, modify "server.js" with the relevant connection information from your DB management system.
+- Import the "MockDatabase.sql" provided in this repository, into the your DB management system.
+- Select "jobbyjob_db" as your active table. 
 
-If all was done correctly, you should now have a connection point in your Database management system with a "jobbyjob_db" table, and a bunch of data.
 
 ### Starting up the server
 - Make sure you have Node installed. (Open terminal/CMD and type "Node -v"). If not, please install it via: [NodeJS](https://nodejs.org/en/download)
 - Open Terminal/CMD in the folder where you extracted this repository. (.../react-job-board-backend)
-- Type "npm install" and please wait for the packages to finish installing.
-- Type "node server.js".
+- Execute the following commands:
+
+```npm install```
+
+After they have finished installing, start the server:
+  
+```node server.js```
 
 Your server should now be up and running with the following:
 ```
@@ -33,4 +41,4 @@ Your server should now be up and running with the following:
   Connected to MySQL
 ```
 
-You may now head to [react-job-board-ui](https://github.com/CedricAOUN/react-job-board-ui), and follow the instructions there to setup the UI.
+You may now enjoy the full capabilities of my [React Job Board Application](https://react-job-board-ui.vercel.app/)
