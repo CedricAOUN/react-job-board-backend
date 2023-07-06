@@ -12,6 +12,12 @@ It requires a MySQL DB server, and a node server. For that reason, Docker has be
 
 
 You may now enjoy the full capabilities if you vist my [React Job Board Application Website](https://react-job-board-ui.vercel.app/). The website should now be querying data from your docker containers,  the login/signup feature is acttive, and you will have a list of jobs displayed on the main page.
-
+### Tips: 
+- Signup as a "Recruiter" account so you can access ALL features
+- Add a job via the menu icon on the top left.
+- Add a CV to your account via the "Profile" menu.
+- Search for that job in the main page. Apply to it! Alternatively, logout and sign up with a different account and apply to it with that one!
+- Re-sign in to your recruiter account and check out "My Jobs". Your job should be listed there with all the "candidates" that have applied to it.
+- You have the option to delete your account in the profile tab.
 
 When done, simply press CTRL + C/CMD + C in your terminal/CMD to stop the process. 
